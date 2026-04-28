@@ -88,7 +88,7 @@ const PomodoroTimer = () => {
 
   return (
     <div className="pomodoro-container">
-      <h1>🍅 Pomodoro Timer</h1>
+      <h1>🍅 Pomodoro Demo Timer</h1>
 
       <div className="timer-label">
         <span className={`status-indicator ${isWorkMode ? 'work' : 'break'}`}></span>
