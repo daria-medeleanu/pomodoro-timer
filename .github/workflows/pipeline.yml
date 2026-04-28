@@ -1,12 +1,52 @@
-name: Simple Pipeline
+name: Pomodoro Timer CI Pipeline
 
 on:
   push:
+    branches: [ "*" ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
-      - run: echo "Build successful"
+      - name: Checkout repository code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install exact dependencies
+        run: npm ci
+
+      - name: Run ESLint checks
+        run: npm run lint
+
+      - name: Build Vite application
+        run: npm run build
+
+      - name: Send email notification
+        uses: dawidd6/action-send-mail@v3
+        if: always()
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{ secrets.MAIL_USERNAME }}
+          password: ${{ secrets.MAIL_PASSWORD }}
+          subject: ${{ job.status == 'success' && '✅ ' || '❌ ' }}Pomodoro Timer Build ${{ job.status }}
+          body: |
+            🔔 Notificare automata pipeline
+            
+            Build status: ${{ job.status }}
+            Commit: ${{ github.sha }}
+            Autor commit: ${{ github.actor }}
+            Branch: ${{ github.ref_name }}
+            
+            Deschide detalii run:
+            ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          to: medeleanudaria14@gmail.com
+          from: GitHub CI Pipeline <ci@pomodoro-timer>
