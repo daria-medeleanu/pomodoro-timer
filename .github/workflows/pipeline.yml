@@ -30,7 +30,7 @@ jobs:
         run: npm run build
 
       - name: Send email notification
-        uses: dawidd6/action-send-mail@v3.1.2
+        uses: dawidd6/action-send-mail@v4
         if: always()
         with:
           server_address: smtp.gmail.com
