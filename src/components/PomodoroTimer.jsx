@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 
-const WORK_DURATION = 1 * 60; // 25 minutes in seconds
+const WORK_DURATION = 25 * 60; // 25 minutes in seconds
 const BREAK_DURATION = 5 * 60;  // 5 minutes in seconds
 
 const PomodoroTimer = () => {
